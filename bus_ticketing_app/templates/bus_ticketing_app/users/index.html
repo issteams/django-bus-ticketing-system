@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Login</title>
+    <link rel="stylesheet" href="{% static 'bus_ticketing_app/users/index.css' %}">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+</head>
+
+<body>
+	<div class="container" id="main">
+		<div class="sign-up">
+			<form action="{% url 'bus_ticketing_app:userSignUp' %}" method="post">
+				{% csrf_token %}
+				<h1>Sign Up</h1>
+				<input type="text" name="name" placeholder="Name" required>
+				<input type="email" name="email" placeholder="Email" required>
+				<input type="text" name="phone_number" id="phone_number" placeholder="Phone Number" required>
+				<input type="text" name="address" id="adress" placeholder="Adress" required>
+				<input type="password" name="password" placeholder="Password" required="">
+				
+				<p><strong>Or</strong></p>
+				<div class="social-container">
+					<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+					<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+					<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+				</div>
+				<input type="submit" value="Sign Up">
+			</form>
+		</div>
+		<div class="sign-in">
+			<form action="{% url 'bus_ticketing_app:userSignIn' %}" method="post">
+				{% csrf_token %}
+				<h1>Sign in</h1>
+				<input type="email" name="email" placeholder="Email" required="">
+				<input type="password" name="password" placeholder="Password" required="">
+				<a href="#">Forget your Password?</a>
+				<p><strong>Or</strong></p>
+				<div class="social-container">
+					<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+					<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+					<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+				</div>
+				<input type="submit" value="Sign In">
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-left">
+					<h1>Hello, Dear</h1>
+					<p>Enter your personal details and start journey with us</p>
+					<button id="signIn">Sign In</button>
+				</div>
+				<div class="overlay-right">
+					<h1>Welcome Back!</h1>
+					<p>To stay connected with us please provide login details</p>
+					<button id="signUp">Sign Up</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		const signUpButton = document.getElementById('signUp');
+		const signInButton = document.getElementById('signIn');
+		const main = document.getElementById('main');
+
+		signUpButton.addEventListener('click', () => {
+			main.classList.add("right-panel-active");
+		});
+		signInButton.addEventListener('click', () => {
+			main.classList.remove("right-panel-active");
+		});
+	</script>
+</body>
+</html>

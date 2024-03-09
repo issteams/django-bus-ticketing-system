@@ -4,9 +4,9 @@ from django.db import models
 class Passenger(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
     address = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
@@ -28,9 +28,18 @@ class Admin(models.Model):
     def __str__(self):
         return self.name
 
+class BusRoute(models.Model):
+    origin = models.CharField(max_length=255)
+    destination = models.CharField(max_length=255)
+    distance = models.FloatField()
+    duration = models.DurationField()
+
+    def __str__(self):
+        return f"{self.origin} to {self.destination}"
+
 class Bus(models.Model):
     company = models.ForeignKey(BusCompanyStaff, on_delete=models.CASCADE)
-    route = models.ForeignKey('BusRoute', on_delete=models.CASCADE)
+    route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
     total_seats = models.IntegerField()
@@ -41,16 +50,6 @@ class Bus(models.Model):
 
     class Meta:
         verbose_name_plural = 'buses'
-
-
-class BusRoute(models.Model):
-    origin = models.CharField(max_length=255)
-    destination = models.CharField(max_length=255)
-    distance = models.FloatField()
-    duration = models.DurationField()
-
-    def __str__(self):
-        return f"{self.origin} to {self.destination}"
 
 class Ticket(models.Model):
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
