@@ -28,16 +28,17 @@
 <body>
 <div class="container">
     <div class="title">Driver Login</div>
-    <form action="#">
+    <form action="{% url 'bus_ticketing_app:driverSignIn' %}" method="post">
+        {% csrf_token %}
         <div class="user-details">
             <div id="form-container"class="input-box">
                 <span class="details">Email</span>
-                <input type="email" placeholder="Enter your email" required>
+                <input type="email" placeholder="Enter your email" name="email">
             </div>
             
             <div id="form-container" class="input-box">
                 <span class="details">Password</span>
-                <input type="password" placeholder="Enter your password" required>
+                <input type="password" placeholder="Enter your password" name="password">
             </div>
 
             <div id="form-container" class="button">

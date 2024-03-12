@@ -20,13 +20,13 @@ class BusCompanyStaff(models.Model):
     def __str__(self):
         return self.name
 
-class Admin(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
+# class Admin(models.Model):
+#     name = models.CharField(max_length=255)
+#     email = models.EmailField(unique=True)
+#     password = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class BusRoute(models.Model):
     origin = models.CharField(max_length=255)
@@ -60,3 +60,11 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"{self.passenger.name} - {self.bus.company.name} - {self.departure_t}"
+
+class Driver(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=20, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True)
+    password = models.CharField(max_length=255)
+    comfirm_password = models.CharField(max_length=255)

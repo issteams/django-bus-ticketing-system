@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naija Ride</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'bus_ticketing_app/style.css' %}">
+  <link rel="stylesheet" href="{% static 'bus_ticketing_app/assets/socicon/css/styles.css' %}">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+<!-- Custom CSS -->
+
+
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap"></noscript>
+
+<style>
+.navbar-logo {
+  float: left;
+  border-radius: 9px;
+
+}
+
+.navbar-caption{
+    text-decoration: none;
+    font-family: sans-serif;
+    color: black;
+    font-size: larger;
+    font-weight: bold;
+    padding-left: 5px;
+
+
+}
+
+.navbarlogo {
+margin-right: 100px;
+}
+</style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-white bg-">
+  <div class="container">
+    {% block header %}  
+    <span class="navbar-logo" id="sp">
+      <a href="">
+        <img src="{% static 'bus_ticketing_app/assets/images/photo-1570125909517-53cb21c89ff2.jpeg' %}" style="height: 4.3rem; border-radius: 20px; padding-bottom: 5px;">
+      </a>
+    </span>
+    <span class="navbar-caption-wrap">
+      <a class="navbar-caption" href="">NaijaRide</a>
+    </span>
+  
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Reservation</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Routes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'bus_ticketing_app:book' %}">Booking</a>
+      </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginsignupDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Login
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="loginsignupDropdown">
+            <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:driverlogin' %}">Driver</a></li>
+            <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:userLogin' %}">Passenger</a></li>
+            <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:adminlogin' %}">Admin</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginsignupDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Signup
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="signupDropdown">
+            <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:userLogin' %}">Passenger</a></li>
+            <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:driversignup' %}">Driver</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+{% block body %}
+<section class="banner">
+  <h1>Embark on an Epic Journey Across Nigeria with NaijaRide - Your Ticket to Adventure!</h1>
+  <a href="{% url 'bus_ticketing_app:userLogin' %}"><button>Book Now</button></a>
+</section>
+
+<footer class="footer">
+  <div class="social-icons">
+    <a href="https://www.facebook.com/intelligentsoftwaresolution" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://twitter.com/YourPage" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.instagram.com/YourPage" target="_blank"><i class="fab fa-instagram"></i></a>
+  
+    <div class="copy">
+      
+     <div class="footer text-center">Designed & Developed By Intelligent Software Solutions - ISS Team | Contact us At <a href="mailto:issteamcompany@gmail.com">iss team</a></div>
+     
+  </div>
+</footer>
+<!-- Bootstrap JavaScript (Optional for Dropdowns and other features) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+</body>
+</html>

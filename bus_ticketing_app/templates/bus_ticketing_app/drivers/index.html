@@ -24,32 +24,36 @@
 <body>
 <div class="container">
     <div class="title">Registration</div>
-    <form action="#">
+    <form action="{% url 'bus_ticketing_app:driverSignUp' %}" method="post">
+        {% csrf_token %}
         <div class="user-details">
             <div class="input-box">
                 <span class="details">Full Name</span>
-                <input type="text" placeholder="Enter your name" required>
+                <input type="text" placeholder="Enter your name" name="name">
             </div>
             <div class="input-box">
                 <span class="details">Username</span>
-                <input type="text" placeholder="Enter your Username" required>
+                <input type="text" placeholder="Enter your Username" name="username">
             </div>
             <div class="input-box">
                 <span class="details">Email</span>
-                <input type="email" placeholder="Enter your email" required>
+                <input type="email" placeholder="Enter your email" name="email">
             </div>
             <div class="input-box">
                 <span class="details">Phone Number</span>
-                <input type="text" placeholder="Enter your number" required>
+                <input type="text" placeholder="Enter your number" name="phone_number">
             </div>
+            {% if message %}
+                {{ message }}
+            {% endif %}
             <div class="input-box">
                 <span class="details">Password</span>
-                <input type="password" placeholder="Enter your password" required>
+                <input type="password" placeholder="Enter your password" name="password">
                 <i class="fa fa-eye-slash" id="togglePassword"></i>
             </div>
             <div class="input-box">
                 <span class="details">Confirm Password</span>
-                <input type="password" placeholder="Confirm your password" required>
+                <input type="password" placeholder="Confirm your password" name="comfirm_password">
             </div>
 
             <div class="button">
