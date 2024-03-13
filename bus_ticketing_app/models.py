@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 # Create your models here.
 class Passenger(models.Model):
     name = models.CharField(max_length=255)
@@ -10,6 +11,10 @@ class Passenger(models.Model):
 
     def __str__(self):
         return self.name
+    
+# class CustomUser(AbstractUser):
+#     user_type_data = ((1, "Admin"), (2, "Driver"), (3, "Passenger"))
+#     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
 
 class BusCompanyStaff(models.Model):
     name = models.CharField(max_length=255)
@@ -31,8 +36,9 @@ class BusCompanyStaff(models.Model):
 class BusRoute(models.Model):
     origin = models.CharField(max_length=255)
     destination = models.CharField(max_length=255)
-    distance = models.FloatField()
-    duration = models.DurationField()
+    date = models.DateField(null=True)
+    # distance = models.FloatField()
+    # duration = models.DurationField()
 
     def __str__(self):
         return f"{self.origin} to {self.destination}"

@@ -16,7 +16,7 @@ body{
     flex-direction: column; /* Stack forms vertically */
     background-repeat: no-repeat; /* Prevent the image from tiling */
     background-attachment: fixed; /* Keep the image fixed in the viewport */
-    background-size: cover; /* Scale the image to cover the entire viewport */
+    background-size: cover;  /* Scale the image to cover the entire viewport */
 }
 
 .container{

@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Passenger, Driver
-from django.contrib.auth.hashers import make_password
+from .models import Passenger, Driver, BusRoute
+from django.contrib.auth.hashers import make_password, check_password
+from datetime import datetime, timedelta
+
 
 # Create your views here.
 # Displaying the views
@@ -12,7 +14,7 @@ def indexView(request):
         user = request.user
     else:
         user = None
-    return render(request, "bus_ticketing_app/layout.html", {
+    return render(request, "bus_ticketing_app/index.html", {
         "user": user
     })
 
@@ -28,6 +30,10 @@ def passengerLoginView(request):
 
 def driverSignUpView(request):
     return render(request, "bus_ticketing_app/drivers/index.html")
+
+def bus_route(request):
+    return render(request, "bus_ticketing_app/users/bus_route.html")
+
 
 # User Sign Up Validation
 def userSignUp(request):
@@ -56,23 +62,23 @@ def userSignUp(request):
             })
         
         # Harsh Password
-        hashed_password = make_password(password)
+        # hashed_password = make_password(password)
 
         # Create and save the user
-        user = Passenger(name=name, email=email, phone_number=phone_number, address=address, password=hashed_password)
+        user = Passenger(name=name, email=email, phone_number=phone_number, address=address, password=password)
         user.save()
-        return render(request, "bus_ticketing_app/users/user_home.html")
+        return redirect("bus_ticketing_app:user_home")
     else:
         return HttpResponse("failed")
     
 def userSignIn(request):
     if request.method == 'POST':
-        username = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        username = request.POST.get('email')
+        password = request.POST.get('password')
+        user = Passenger.objects.filter(email=username, password=password)
         if user is not None:
-            login(request, user)
-            return HttpResponse("Success")
+            # login(request, user)
+            return redirect("bus_ticketing_app:user_home")
         else:
             return HttpResponse("invalid username or password")
     else:
@@ -111,7 +117,7 @@ def driverSignUp(request):
                 "message": "Email Adress already exists"
             })
         
-        # Harsh Password
+        # Hash Password
         hashed_password = (make_password(password), make_password(comfirm_password))
 
         # Create and save the user
@@ -125,8 +131,8 @@ def driverLogin(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        hashed_password = make_password(password)
-        user = authenticate(request, username=email, password=password)
+        hashed_password = check_password(password)
+        user = authenticate(request, username=email, password=hashed_password)
         if user is not None:
             login(request, user)
             return HttpResponse("Login Successful")
@@ -140,8 +146,43 @@ def book(request):
             "Message": "`you did'nt sign up"
         })
 
+
+def search_bus_route(request):
+    origin = request.GET.get('origin')
+    destination = request.GET.get('destination')
+    date = request.GET.get('date')
+    
+    if origin and destination and date:
+        # Convert the date string to a datetime object
+        # try:
+        #     date = datetime.strptime(date, "%y-%m-%d")
+        # except ValueError:
+        #     return HttpResponse("Invalid date format. Please use YYYY-MM-DD.")
+
+        # Define the date range for searching (e.g., +/- 1 day from the specified date)
+        # start_date = date - timedelta(days=1)
+        # end_date = date + timedelta(days=1)
+
+        # Filter bus routes within the date range
+        bus_routes = BusRoute.objects.filter(origin=origin, destination=destination, date=date)
+        
+        if bus_routes.exists():
+            response = ""
+            for route in bus_routes:
+                response += f"From {route.origin} to {route.destination} on {route.date}<br>"
+            return HttpResponse(response)
+        else:
+            return HttpResponse("No bus routes found for the given criteria.")
+    else:
+        return HttpResponse("Please provide origin, destination, and date parameters.")
+
+
+def user_home(request):
+    return render(request, "bus_ticketing_app/users/user_home.html")
 def driverLogout(request):
     logout(request)
 
 def userLogOut(request):
     logout(request)
+
+    return redirect("bus_ticketing_app:index")

@@ -1,1 +1,211 @@
-{% }
+{% extends 'bus_ticketing_app/layout.html' %}
+{% load static %}
+
+
+{% block body %}
+<style>
+    #form-container {
+       width: 100%;
+      }
+
+      .signup{
+        padding-top: 5px;
+      }
+
+      .asignup {
+        text-decoration: none;
+        /* background-color: #0dd60d; */
+        /* color:rgb(252, 247, 247); */
+        width: 100%;
+        height: 100%;
+      }
+    .container{
+        max-width: 700px;
+        width: 100%;
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 5px;
+
+    }
+
+.container .title{
+    font-size: 25px;
+    font-weight: 500;
+    position: relative;
+
+}
+
+.container .title::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    background: #98FF98;
+}
+
+.container form .user-details{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+    flex-direction: column; /* Stack forms vertically */
+    width: 100%;
+}
+
+form .user-details .input-box{
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+
+}
+
+.user-details .input-box .details{
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.user-details .input-box input{
+    height: 45px;
+    width: 100%;
+    outline: none;
+    border-radius:5px ;
+    border: 1px solid #ccc ;
+    padding-left: 15px;
+    font-size: 15px; 
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.user-details .input-box input:focus,
+.user-details .input-box input:valid{
+    border-color: #98FF98;
+}
+
+form .button{
+    width: 100%;
+    height: 45px;
+    margin: 20spx 0;
+
+}
+
+form .button input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: #fff;
+    border: none;
+    font-size:18px ;
+    font-weight: 500;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    background: black ;
+
+}
+
+
+form .button input:hover{
+
+ background: #0dd60d;
+ opacity: 0.8;
+}
+
+@media (max-width: 584px) {
+    .container{
+        max-width: 100%;
+    }
+    form .user-details .input-box{
+        margin-bottom: 15px;
+        width:100%;
+    
+    }
+    .container form .user-details{
+        max-height: 300px;
+        overflow: y-scroll;
+    }
+    .user-details::-webkit-scrollbar{
+        width: 0;
+
+    }
+
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-white bg-">
+    <div class="container-fluid">
+        <span class="navbar-logo" id="sp">
+        <a href="">
+          <img src="{% static 'bus_ticketing_app/assets/images/photo-1570125909517-53cb21c89ff2.jpeg' %}" style="height: 4.3rem; border-radius: 20px; padding-bottom: 5px;">
+        </a>
+        </span>
+        <span class="navbar-caption-wrap">
+            <a class="navbar-caption" href="">NaijaRide</a>
+        </span>
+    
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'bus_ticketing_app:user_home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Reservation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'bus_ticketing_app:bus_route' %}">Routes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'bus_ticketing_app:book' %}">Booking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">View Tickets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'bus_ticketing_app:logout' %}">LogOut</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav><br>
+<div class="container">
+    <div class="title">Search Bus Route</div>
+        <form action="{% url 'bus_ticketing_app:bus_route_result' %}">
+            {% csrf_token %}
+            <div class="user-details">
+                <div id="form-container"class="input-box">
+                    <span class="details">Origin</span>
+                    <input type="text" placeholder="Enter the Origin" name="origin">
+                </div>
+            
+                <div id="form-container" class="input-box">
+                    <span class="details">Destination</span>
+                    <input type="text" placeholder="Enter the Destination" name="destination">
+                </div>
+                <div id="form-container" class="input-box">
+                    <span class="details">Date</span>
+                    <input type="date" name="date" id="dateInput">
+                </div>
+                <div id="form-container" class="button">
+                    <input type="submit" value="Search">
+                </div>
+            </div>
+        </form>
+    </div> 
+    <script>
+        window.onload = function() {
+            // Get the date input field
+            var dateInput = document.getElementById("dateInput");
+
+            // Change the date format (e.g., from YYYY-MM-DD to DD-MM-YYYY)
+            dateInput.addEventListener("input", function() {
+                var dateValue = this.value; // Get the current value of the input field
+                var parts = dateValue.split("-"); // Split the date value into parts using "-"
+                if (parts.length === 3) {
+                    var formattedDate = parts[0] + "-" + parts[1] + "-" + parts[2]; // Rearrange the parts to desired format
+                    this.value = formattedDate; // Update the value of the input field with the formatted date
+                }
+            });
+        };
+    </script>  
+{% endblock %}
