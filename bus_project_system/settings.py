@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-n@a@r9(ihlcsl#6*^+l_%_0-9#n+psb=2uv(eef3hvfvi+zksh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -123,5 +123,10 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #For Custom USER
-# AUTH_USER_MODEL = "bus_ticketing_app.CustomUser"
+AUTH_USER_MODEL = "bus_ticketing_app.CustomUser"
+
+AUTHENTICATION_BACKENDS = [
+    'bus_ticketing_app.CustomUserBackEnd.CustomUserBackend',
+]
+
 

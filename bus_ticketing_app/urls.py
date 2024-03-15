@@ -10,6 +10,7 @@ urlpatterns = [
     path("driver/signup/", views.driverSignUpView, name='driversignup'),
 
     path("Routes/", views.bus_route, name="bus_route"),
+    path("reserve/", views.bus_reserve, name="reserve"),
     path("search_route/", views.search_bus_route, name="bus_route_result"),
 
     path("user/signup/", views.userSignUp, name='userSignUp'),

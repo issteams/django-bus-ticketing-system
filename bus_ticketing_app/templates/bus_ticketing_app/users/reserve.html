@@ -133,14 +133,16 @@ form .button input:hover{
 {% include 'bus_ticketing_app/users/nav_bar.html' %}<br>
 <div class="container-fluid">
     <div class="title">Search Bus Route</div>
-        <form action="{% url 'bus_ticketing_app:bus_route_result' %}">
+        <form action="" method="get">
             {% csrf_token %}
             <div class="user-details">
                 <div id="form-container"class="input-box">
                     <span class="details">Origin</span>
                     <input type="text" placeholder="Enter the Origin" name="origin">
                 </div>
-            
+                <select name="" id="">
+                    <option value="">{{ bus_routes }}</option>
+                </select>
                 <div id="form-container" class="input-box">
                     <span class="details">Destination</span>
                     <input type="text" placeholder="Enter the Destination" name="destination">
@@ -154,5 +156,8 @@ form .button input:hover{
                 </div>
             </div>
         </form>
+        
     </div> 
 {% endblock %}
+
+

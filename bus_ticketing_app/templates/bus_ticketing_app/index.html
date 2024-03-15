@@ -19,7 +19,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" href="#">Home</a>
         </li>
         <li class="nav-item">
@@ -27,10 +27,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="#">Routes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'bus_ticketing_app:book' %}">Booking</a>
-        </li>
+        </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="loginsignupDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Login
@@ -47,7 +44,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="signupDropdown">
               <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:userLogin' %}">Passenger</a></li>
-              <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:driversignup' %}">Driver</a></li>
+              <!-- <li><a class="dropdown-item" href="{% url 'bus_ticketing_app:driversignup' %}">Driver</a></li> -->
             </ul>
           </li>
         </ul>
@@ -56,6 +53,6 @@
   </nav>
   <section class="banner">
     <h1>Embark on an Epic Journey Across Nigeria with NaijaRide - Your Ticket to Adventure!</h1>
-    <a href="{% url 'bus_ticketing_app:userLogin' %}"><button>Book Now</button></a>
+    <a href="{% url 'bus_ticketing_app:userLogin' %}"><button>Start Here</button></a>
   </section>  
   {% endblock %}
