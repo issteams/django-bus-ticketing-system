@@ -558,6 +558,6 @@ def admin_profile_save(request):
         if password != None and password != "":
             user.set_password(password)
         user.save()
-        return redirect("bus_ticketing_app:admin_home")
+        return redirect("bus_ticketing_app:signin")
     else:
-        return redirect("bus_ticketing_app:admin_home")
+        return redirect("bus_ticketing_app:admin_profile")

@@ -35,7 +35,7 @@
               <tr>
                 <td>{{ payment.id }}</td>
                 <td>{{ payment.passenger_id.admin.username }}</td>
-                <td>From {{ payment.schedule_id.departure_time }} To {{ payment.schedule_id.arrival_time }}</td>
+                <td>{{ payment.schedule_id.route_id.origin }} To {{ payment.schedule_id.route_id.destination }}</td>
                 <td>{{ payment.amount }}</td>
                 <td>{{ payment.payment_date }}</td>
                 <td>{{ payment.payment_status }}</td>

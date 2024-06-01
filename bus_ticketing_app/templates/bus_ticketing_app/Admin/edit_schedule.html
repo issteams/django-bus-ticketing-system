@@ -1,37 +1,81 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Schedule</title>
-    <link rel="stylesheet" href="{% static 'bus_ticketing_app/drivers/style.css' %}">
+{% extends 'bus_ticketing_app/Admin/admin_layout.html' %}
 
-    <style>
-        .signup{
-        padding-top: 5px;
-      }
+{% block custom_css %}
+<style>
+.edit-schedule {
+    max-width: 500px;
+    width: 100%;
+    margin: 50px auto;
+    background: #f4f7f6;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-      .asignup {
-        text-decoration: none;
-        /* background-color: #0dd60d; */
-        /* color:rgb(252, 247, 247); */
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-</head>
-<body>
-<div class="container">
+.form {
+    width: 100%;
+}
+
+.input-box {
+    margin-bottom: 20px;
+}
+
+.input-box .details {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input-box input, .input-box select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-box input:focus, .input-box select:focus {
+    border-color: #6c63ff;
+}
+
+.button {
+    text-align: center;
+}
+
+.button input {
+    background: #6c63ff;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.button input:hover {
+    background: #4a46d1;
+}
+</style>
+{% endblock custom_css %}
+
+{% block body %}
+<div class="edit-schedule">
     <div class="title">Add Schedule</div>
     <form action="{% url 'bus_ticketing_app:edit_schedule_save' %}" method="post">
         {% csrf_token %}
         <div class="user-details">
             <div class="input-box">
                 <span class="details">Bus Routes</span>
-                <select name="bus_route" style="height: 50%; width: 300px; font-size: 20px;">
+                <select name="bus_route">
                     {% for bus_route in bus_routes %}
                     <option value="{{ bus_route.id }}" {% if bus_route.id == schedule.route_id.id %} selected {% endif %}>From {{ bus_route.origin }} To {{ bus_route.destination }}</option>
                     {% endfor %}
@@ -39,7 +83,7 @@
             </div>
             <div class="input-box">
                 <span class="details">Bus Number</span>
-                <select name="bus" style="height: 50%; width: 300px; font-size: 20px;">
+                <select name="bus">
                     {% for bus in buses %}
                     <option value="{{ bus.id }}" {% if bus.id == schedule.bus_id.id %} selected {% endif %}>{{ bus.bus_number }}</option>
                     {% endfor %}
@@ -55,10 +99,9 @@
                 <input type="hidden" class="form-control" name="schedule_id" value="{{ schedule.id }}">
             </div>
             <div class="button">
-                <input type="submit" value="Add Schedule">
+                <input type="submit" value="Update Schedule">
             </div>
         </div>
     </form>
 </div>
-</body>
-</html>
+{% endblock body %}

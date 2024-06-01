@@ -36,7 +36,7 @@
               <tr>
                 <td>{{ ticket.id }}</td>
                 <td>{{ ticket.passenger.admin.username }}</td>
-                <td>From {{ ticket.schedule.departure_time }} To {{ ticket.schedule.arrival_time }}</td>
+                <td>{{ ticket.schedule.route_id.origin }} To {{ ticket.schedule.route_id.destination }}</td>
                 <td>{{ ticket.seat_number }}</td>
                 <td>{{ ticket.payment.passenger_id.admin.username }}</td>
                 <td>{{ ticket.status }}</td>
