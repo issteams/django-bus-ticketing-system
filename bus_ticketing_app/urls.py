@@ -63,13 +63,14 @@ urlpatterns = [
    # User Urls
    path('user_home/', UserViews.user_home, name='user_home'),
    path("search_result/", UserViews.search_result, name='search_result'),
-   path("select_schedule/<str:route_id>/<str:date>/", UserViews.select_schedule, name='select_schedule'),
    path("book_seat/<str:schedule_id>/", UserViews.book_seat, name='book_seat'),
    path("get_book_seat/<str:schedule_id>/", UserViews.get_book_seat, name='get_book_seat'),
    path("make_payment/<str:schedule_id>/", UserViews.make_payment, name='make_payment'),
-   path("comfirm_payment/<str:payment_id>/", UserViews.comfirm_payment, name='comfirm_pament'),
+   path("verify_payment/", UserViews.verify_payment, name='verify_payment'),
+   path("payment_success/", UserViews.payment_success, name='payment_success'),
    path("user_tickets/", UserViews.user_tickets, name='user_tickets'),
    path("user_payments/", UserViews.user_payments, name='user_payments'),
+   path("print_ticket/<str:ticket_id>/", UserViews.print_ticket, name='print_ticket'),
 
    # Log Out Url
    path("logout/", views.userLogOut, name="logout"),

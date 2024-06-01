@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import BusRoute, Schedule, Ticket, Payment, Passenger
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from django.utils import timezone
 from datetime import datetime
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import get_template
+import requests
+import json
 
 
 @login_required
@@ -60,49 +65,6 @@ def search_result(request):
             "message": "Invalid request method."
         })
 
-
-
-@login_required
-def select_schedule(request, route_id, date):
-    schedules = Schedule.objects.filter(route_id=route_id, departure_time__date=date)
-    schedule_id = None
-    departure_time = None
-    arrival_time = None
-    # available_seats = 0
-    capacity = 0
-    seats = []
-
-    for schedule in schedules:
-        schedule_id = schedule.id
-        departure_time = schedule.departure_time
-        arrival_time = schedule.arrival_time
-        capacity = schedule.bus_id.capacity
-        # booked_seats = schedule.ticket_set.values_list('seat_number', flat=True)
-        # available_seats = capacity - len(booked_seats)
-        for seat in range(1, capacity + 1):
-            seats.append(seat)
-
-    # if selected_seat:
-    #     if selected_seat in seats:
-    #         seats.remove(selected_seat)
-    #         available_seats -= 1
-    #         # Update bus capacity in the database
-    #         schedule.bus_id.capacity -= 1
-    #         schedule.bus_id.save()
-    #         print("Seat booked successfully")
-    #         # Add your booking logic here
-    #     else:
-    #         print("Selected seat is not available")
-
-    return render(request, "bus_ticketing_app/users/schedule.html", {
-        "schedule_id": schedule_id,
-        "departure_time": departure_time,
-        "arrival_time": arrival_time,
-        "capacity": capacity,
-        "seats": seats,
-    })
-
-
 def book_seat(request, schedule_id):
     schedule = Schedule.objects.get(id=schedule_id)
     seats = []
@@ -120,65 +82,170 @@ def get_book_seat(request, schedule_id):
     if request.method == 'POST':
         seat_number = request.POST.get('seat_number')
         user = request.user.id
-        passenger = Passenger.objects.get(admin=user)
+        try:
+            passenger = Passenger.objects.get(admin=user)
+        except Student.DoesNotExist:
+            # Handle the case where the student doesn't exist
+            messages.error(request, "Passenger not found")
+            return redirect("book_seat", schedule_id)
+
         try:
             schedule = Schedule.objects.get(id=schedule_id)
-            if Ticket.objects.filter(schedule=schedule, seat_number=seat_number).exists():
-                messages.error(request, "Seat Already Booked")
-                return redirect("bus_ticketing_app:book_seat", schedule_id)
-            else:
-                Ticket.objects.create(passenger_id=passenger, schedule=schedule, seat_number=seat_number, status="pending")
-                schedule.seat_number = seat_number
-                schedule.save()
-                messages.success(request, "Seat Booked Sucessfuly")
-                return redirect("bus_ticketing_app:make_payment", schedule_id)
+            schedule.seat_number = seat_number
+            schedule.save()
         except Schedule.DoesNotExist:
-            return HttpResponse("Not Found")
-    else:
-        pass
+            # Handle the case where the schedule doesn't exist
+            return HttpResponse("Schedule not found")
 
+        # Check if the seat is already booked
+        if Ticket.objects.filter(schedule=schedule, seat_number=seat_number).exists():
+            messages.error(request, "Seat already booked")
+            return redirect("bus_ticketing_app:book_seat", schedule_id)
+
+        # Create a new ticket for the student
+        ticket = Ticket.objects.create(passenger=passenger, schedule=schedule, seat_number=seat_number, status="pending")
+        messages.success(request, "Seat booked successfully")
+        return redirect("bus_ticketing_app:make_payment", schedule_id)
+
+    else:
+        # Handle GET request if needed
+        pass
 
 @login_required
 def make_payment(request, schedule_id):
-    schedule = Schedule.objects.get(id=schedule_id)
-    ticket = Ticket.objects.filter(schedule=schedule)
-    origin = schedule.route_id.origin
-    destination = schedule.route_id.destination
-    departure_time = schedule.departure_time
-    arrival_time = schedule.arrival_time
-    bus_capacity = schedule.bus_id.capacity
-    seat_number = schedule.seat_number
-    return render(request, "bus_ticketing_app/users/payment.html", {
-        "origin": origin,
-        "destination": destination,
-        "departure_time": departure_time,
-        "arrival_time": arrival_time,
-        "capacity": bus_capacity,
-        "seat_number": seat_number,
-        "total_price": "20000"
-    })
-    
-    # if request.method == 'POST':
-    #     user = request.user.id
-    #     try:
-    #         schedule = Schedule.objects.get(pk=schedule_id)
-    #         payment = Payment.objects.create(passenger_id=user, schedule_id=schedule, amount=amount, payment_status="Pending")
-    #         return HttpResponse("Payment Created Successfully")
-    #     except Schedule.DoesNotExist:
-    #         return HttpResponse("Not Found")
+    if request.method == 'POST':
+        seat_number = request.POST.get('seat_number')
+        amount = request.POST.get('amount')
+        user = request.user
+
+        try:
+            schedule = Schedule.objects.get(id=schedule_id)
+            schedule.seat_number = seat_number
+            schedule.save()
+            student = Student.objects.get(admin=user)
+
+            if Ticket.objects.filter(schedule=schedule, seat_number=seat_number).exists():
+                messages.error(request, "Seat Already Booked")
+                return redirect('book_seat', schedule_id)
+
+            # Generate a unique reference for the payment
+            reference = f"{user.id}-{schedule_id}-{seat_number}-{int(datetime.now().timestamp())}"
+
+            # Create a pending ticket
+            ticket = Ticket.objects.create(
+                student=student,
+                schedule=schedule,
+                seat_number=seat_number,
+                status="pending",
+                payment_reference=reference
+            )
+
+            # Create a Paystack payment session
+            headers = {
+                'Authorization': f'Bearer {settings.PAYSTACK_SECRET_KEY}',
+                'Content-Type': 'application/json'
+            }
+            data = {
+                'email': user.email,
+                'amount': int(amount) * 100,  # Amount in kobo
+                'reference': reference,
+                'callback_url': request.build_absolute_uri('/verify_payment/')
+            }
+
+            response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, json=data)
+            response_data = response.json()
+
+            if response_data['status']:
+                payment_url = response_data['data']['authorization_url']
+                return redirect(payment_url)
+            else:
+                messages.error(request, f"Payment initialization failed: {response_data['message']}")
+                return redirect('make_payment', schedule_id)
+
+        except Schedule.DoesNotExist:
+            return HttpResponse("Schedule Not Found")
+        except Student.DoesNotExist:
+            return HttpResponse("Student Not Found")
+    else:
+        schedule = get_object_or_404(Schedule, id=schedule_id)
+        amount = 1000  # Placeholder amount; replace with actual amount calculation
+
+        return render(request, "bus_ticketing_app/users/payment.html", {
+            "schedule": schedule,
+            "amount": amount,
+            "seat_number": schedule.seat_number,
+            "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY
+        })
+
+@csrf_exempt
+def verify_payment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        reference = data.get('reference')
+        schedule_id = data.get('schedule_id')
+        seat_number = data.get('seat_number')
+
+        url = f"https://api.paystack.co/transaction/verify/{reference}"
+        headers = {
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}"
+        }
+        response = requests.get(url, headers=headers)
+        response_data = response.json()
+
+        if response_data['status'] and response_data['data']['status'] == 'success':
+            # Payment was successful
+            amount = response_data['data']['amount'] / 100  # Convert from kobo to naira
+
+            try:
+                schedule = Schedule.objects.get(id=schedule_id)
+                user = request.user
+                passenger = Passenger.objects.get(admin=user)
+
+                # Create or get the Ticket
+                ticket, created = Ticket.objects.get_or_create(
+                    schedule=schedule,
+                    seat_number=seat_number,
+                    defaults={'passenger': passenger, 'status': 'pending', 'payment_reference': reference}
+                )
+
+                # Ensure the payment is only recorded once
+                if ticket.status != "confirmed":
+                    # Create Payment record
+                    payment = Payment.objects.create(
+                        passenger_id=passenger,
+                        schedule_id=schedule,
+                        amount=amount,
+                        payment_status='Paid'
+                    )
+
+                    # Update Ticket record
+                    ticket.status = "confirmed"
+                    ticket.payment = payment
+                    ticket.payment_reference = reference
+                    ticket.save()
+
+                    return JsonResponse({'status': 'success'})
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Ticket already confirmed'}, status=400)
+
+            except (Schedule.DoesNotExist, Passenger.DoesNotExist) as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Payment verification failed'}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
 
 @login_required
-def comfirm_payment(request, payment_id):
-    if request.method == 'POST':
-        try:
-            payment = Payment.objects.get(pk=payment_id)
-            payment.payment_status = 'Paid'
-            payment.save()
+def payment_success(request):
+    messages.success(request, "Payment successful! Your seat has been booked.")
+    return render(request, "bus_ticketing_app/users/payment_success.html")
 
-            Ticket.objects.filter(payment=payment).update(status="comfirmed")
-            return HttpResponse("Payment Comfirmed")
-        except Payment.DoesNotExist:
-            return HttpResponse("Not Found")
+@login_required
+def payment_cancel(request):
+    pass
+
 
 def user_books(request):
     pass
@@ -198,6 +265,15 @@ def user_payments(request):
     })
     
 
+@login_required
+def print_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id, passenger__admin=request.user)
+    template = get_template('bus_ticketing_app/users/print_ticket.html')
+    context = {
+        'ticket': ticket,
+    }
+    html = template.render(context)
+    return HttpResponse(html)
 
 
 

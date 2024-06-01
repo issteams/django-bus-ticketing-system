@@ -2,25 +2,41 @@
 
 {% block custom_css %}
 <style>
-    .list-group-item {
-        border: none;
+    .table {
+        margin-top: 20px;
+        width: 100%;
+        font-size: 18px;
     }
 
-    .bg-light {
-        background-color: #f8f9fa !important;
+    .table th, .table td {
+        vertical-align: middle;
+        border-top: none; /* Remove top border */
     }
 
-    .shadow-sm {
-        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    .table thead th {
+        background-color: #d1e7dd; /* Lighter shade of green */
+        color: #007bff; /* Deserved color */
     }
 
-    .btn-success, .btn-primary {
+    .table tbody {
+        background-color: #f8f9fa; /* Light background */
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #ffffff; /* Alternate row background */
+    }
+
+    .btn-primary {
         width: 100%;
         font-size: 16px;
     }
 
     h4 {
         color: #007bff;
+    }
+
+    .alert-info {
+        font-size: 18px;
     }
 </style>
 {% endblock custom_css %}
@@ -30,29 +46,37 @@
     <div class="container">
         <div class="row mt-3">
             <div class="col-md-10 offset-md-1">
-                <div class="list-group">
-                    {% if message %}
-                    <div class="list-group-item bg-light p-4 rounded shadow-sm">
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="mb-3">{{ message }}</h3>
-                                <p class="mb-0">Please contact customer support for further assistance.</p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% for schedule in schedules %}
-                    <div class="list-group-item bg-light p-4 rounded shadow-sm mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <h4 class="mb-1">Origin: {{ schedule.route_id.origin|upper }}</h4>
-                                <h4 class="mb-3">Destination: {{ schedule.route_id.destination|upper }}</h4>
-                                <p class="mb-0">Enjoy a comfortable journey from {{ schedule.route_id.origin }} to {{ schedule.route_id.destination }}. Our buses are equipped with modern amenities to ensure a pleasant travel experience.</p>
-                                <a href="" class="btn btn-primary mt-3">View Schedule</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+                {% if message %}
+                <div class="alert alert-info">
+                    <h3 class="mb-3">{{ message }}</h3>
+                    <p class="mb-0">Please contact customer support for further assistance.</p>
+                </div>
+                {% endif %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Origin</th>
+                                <th>Destination</th>
+                                <th>Departure Time</th>
+                                <th>Arrival Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in schedules %}
+                            <tr>
+                                <td><h4 class="mb-3">{{ schedule.route_id.origin }}</h4></td>
+                                <td><h4 class="mb-3">{{ schedule.route_id.destination }}</h4></td>
+                                <td><h4 class="mb-3">{{ schedule.departure_time }}</h4></td>
+                                <td><h4 class="mb-3">{{ schedule.arrival_time }}</h4></td>
+                                <td>
+                                    <a href="{% url 'bus_ticketing_app:book_seat' schedule.id %}" class="btn btn-primary">Book Seat</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

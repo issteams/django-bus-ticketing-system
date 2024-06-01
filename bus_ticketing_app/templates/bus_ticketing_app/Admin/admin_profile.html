@@ -71,7 +71,7 @@
 
 {% block body %}
 <div class="profile">
-    <div class="title">Profile</div>
+    <div class="title">Edit Profile</div>
     <form action="{% url 'bus_ticketing_app:admin_profile_save' %}" method="post">
         {% csrf_token %}
         <div class="user-details">

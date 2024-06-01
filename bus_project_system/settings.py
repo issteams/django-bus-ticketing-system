@@ -132,4 +132,5 @@ AUTH_USER_MODEL = "bus_ticketing_app.CustomUser"
 AUTHENTICATION_BACKENDS = ['bus_ticketing_app.EmailBackEnd.EmailBackEnd']
 
 
-# Ensure you have this if you are serving static files in development
+PAYSTACK_PUBLIC_KEY = 'pk_test_00c5b29d8c7bd153dce4c3208c51b883bebd4c53'
+PAYSTACK_SECRET_KEY = 'sk_test_9001196602271174413e9628272a22c775b37e26'

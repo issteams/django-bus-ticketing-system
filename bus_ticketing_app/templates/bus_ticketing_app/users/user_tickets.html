@@ -88,8 +88,8 @@
                   {% if ticket.status == 'pending' %}
                     <a href="{% url 'bus_ticketing_app:make_payment' ticket.id %}" class="reserve-btn">Make Payment</a>
                     <a href="" class="btn btn-danger">Cancel Ticket</a>
-                  {% elif ticket.status == 'comfirmed' %}
-                    <button class="view-schedule-btn" disabled>Confirmed</button>
+                  {% elif ticket.status == 'confirmed' %}
+                    <a href="{% url 'bus_ticketing_app:print_ticket' ticket.id %}" class="btn btn-success">Print</a>
                   {% elif ticket.status == 'cancelled' %}
                     <button class="view-schedule-btn" disabled>Cancelled</button>
                   {% endif %}

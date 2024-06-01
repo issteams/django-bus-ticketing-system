@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .ticket-container {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #000;
+            border-radius: 10px;
+        }
+        .ticket-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .ticket-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .ticket-details {
+            margin-bottom: 20px;
+        }
+        .detail-item {
+            margin-bottom: 5px;
+        }
+        .ticket-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-container">
+        <div class="ticket-header">
+            <h2 class="ticket-title">Bus Ticket</h2>
+        </div>
+        <div class="ticket-details">
+            <p class="detail-item"><strong>Route:</strong> {{ ticket.schedule.route_id.origin }} to {{ ticket.schedule.route_id.destination }}</p>
+            <p class="detail-item"><strong>Departure Time:</strong> {{ ticket.schedule.departure_time }}</p>
+            <p class="detail-item"><strong>Arrival Time:</strong> {{ ticket.schedule.arrival_time }}</p>
+            <p class="detail-item"><strong>Seat Number:</strong> {{ ticket.seat_number }}</p>
+            <p class="detail-item"><strong>Total Price:</strong> ${{ ticket.payment.amount }}</p>
+        </div>
+        <div class="ticket-footer">
+            <p>Thank you for choosing our service!</p>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

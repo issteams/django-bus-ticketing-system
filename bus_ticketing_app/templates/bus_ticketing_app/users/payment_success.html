@@ -1,0 +1,43 @@
+{% extends 'bus_ticketing_app/users/user_layout.html' %}
+
+{% block title %}Payment Success{% endblock title %}
+
+{% block custom_css %}
+<style>
+    .success-container {
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    .success-icon {
+        font-size: 48px;
+        color: green;
+    }
+
+    .success-message {
+        margin-top: 20px;
+        font-size: 24px;
+        color: black;
+    }
+
+    .back-button {
+        margin-top: 40px;
+    }
+</style>
+{% endblock custom_css %}
+
+{% block body %}
+<section class="content py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="success-container">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <p class="success-message">Payment successful! Your seat has been booked.</p>
+                    <a href="{% url 'bus_ticketing_app:user_home' %}" class="btn btn-primary back-button">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock body %}

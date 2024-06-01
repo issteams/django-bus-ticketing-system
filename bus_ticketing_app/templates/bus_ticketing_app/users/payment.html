@@ -51,47 +51,79 @@
             <div class="col-md-8 offset-md-2">
                 <div class="payment-container">
                     <h3 class="payment-title">Payment Information</h3>
-                    <form action="" method="post">
+                    <form id="paymentForm" action="" method="post">
                         {% csrf_token %}
-                        <div class="form-group">
-                            <label for="card_number">Card Number</label>
-                            <input type="text" class="form-control" id="card_number" name="card_number" placeholder="Enter your card number" required>
+                        <input type="hidden" id="email" name="email" value="{{ user.email }}">
+                        <input type="hidden" id="amount" name="amount" value="{{ amount }}">
+                        <input type="hidden" id="reference" name="reference" value="{{ reference }}">
+                        <input type="hidden" id="seat_number" name="seat_number" value="{{ seat_number }}">
+                        <input type="hidden" id="schedule_id" name="schedule_id" value="{{ schedule.id }}">
+                        <div class="summary-box">
+                            <h4 class="summary-title">Booking Summary</h4>
+                            <p><strong>Origin:</strong> {{ schedule.route_id.origin }}</p>
+                            <p><strong>Destination:</strong> {{ schedule.route_id.destination }}</p>
+                            <p><strong>Departure Time:</strong> {{ schedule.departure_time }}</p>
+                            <p><strong>Arrival Time:</strong> {{ schedule.arrival_time }}</p>
+                            <p><strong>Seat Number:</strong> {{ seat_number }}</p>
+                            <p><strong>Total Price:</strong> ${{ amount }}</p>
                         </div>
-                        <div class="form-group">
-                            <label for="card_name">Name on Card</label>
-                            <input type="text" class="form-control" id="card_name" name="card_name" placeholder="Enter the name on your card" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 form-group">
-                                <label for="expiry_date">Expiry Date</label>
-                                <input type="text" class="form-control" id="expiry_date" name="expiry_date" placeholder="MM/YY" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="cvv">CVV</label>
-                                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Enter CVV" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="billing_address">Billing Address</label>
-                            <input type="text" class="form-control" id="billing_address" name="billing_address" placeholder="Enter your billing address" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Make Payment</button>
+                        <button type="button" id="pay-now" class="btn btn-primary mt-3">Pay Now</button>
                     </form>
-                </div>
-            </div>
-            <div class="col-md-8 offset-md-2 mt-5">
-                <div class="summary-box">
-                    <h4 class="summary-title">Booking Summary</h4>
-                    <p><strong>Origin:</strong> {{ origin }}</p>
-                    <p><strong>Destination:</strong> {{ destination }}</p>
-                    <p><strong>Departure Time:</strong> {{ departure_time }}</p>
-                    <p><strong>Arrival Time:</strong> {{ arrival_time }}</p>
-                    <p><strong>Bus Capacity:</strong> {{ capacity }}</p>
-                    <p><strong>Seat Number:</strong> {{ seat_number }}</p>
-                    <p><strong>Total Price:</strong> ${{ total_price }}</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 {% endblock body %}
+
+{% block custom_js %}
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+    document.getElementById('pay-now').addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        var email = document.getElementById('email').value;
+        var amount = document.getElementById('amount').value * 100; // Amount in kobo
+        var reference = document.getElementById('reference').value;
+        var seat_number = document.getElementById('seat_number').value;
+        var schedule_id = document.getElementById('schedule_id').value;
+        
+        var handler = PaystackPop.setup({
+            key: '{{ paystack_public_key }}', // Replace with your Paystack public key
+            email: email,
+            amount: amount,
+            currency: 'NGN',
+            ref: reference,
+            callback: function(response) {
+                // This happens after the payment is completed successfully
+                var reference = response.reference;
+                // Make an AJAX call to your server with the reference to verify the transaction
+                fetch("{% url 'bus_ticketing_app:verify_payment' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        reference: reference,
+                        schedule_id: schedule_id,
+                        seat_number: seat_number
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        window.location.href = "{% url 'bus_ticketing_app:payment_success' %}";
+                    } else {
+                        alert('Payment verification failed');
+                    }
+                });
+            },
+            onClose: function() {
+                alert('Transaction was not completed, window closed.');
+            }
+        });
+        handler.openIframe();
+    });
+</script>
+{% endblock custom_js %}

@@ -80,6 +80,7 @@ class Ticket(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
     booking_date = models.DateTimeField(auto_now_add=True)
+    payment_reference = models.CharField(max_length=100, null=True, blank=True) 
 
 
 @receiver(post_save,sender=CustomUser)
