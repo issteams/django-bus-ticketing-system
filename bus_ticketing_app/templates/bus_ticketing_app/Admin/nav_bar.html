@@ -1,0 +1,52 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-white bg-">
+    <div class="container">
+      <span class="navbar-logo" id="sp">
+        <a href="">
+          <img src="{% static 'bus_ticketing_app/assets/images/photo-1570125909517-53cb21c89ff2.jpeg' %}" style="height: 4.3rem; border-radius: 20px; padding-bottom: 5px;">
+        </a>
+      </span>
+      <span class="navbar-caption-wrap">
+        <a class="navbar-caption" href="">NaijaRide</a>
+      </span>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        {% url 'bus_ticketing_app:admin_home' as admin_home %}
+        <li class="nav-item">
+          <a href="{{ admin_home }}" class="nav-link {% if request.path == admin_home %} active {% endif %}" style="color: black;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:staff' %}">Staffs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:passenger' %}">Passangers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:bus_route' %}">Routes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:bus' %}">Bus</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:schedule' %}">Schedules</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:payment' %}">Payments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:ticket' %}">Tickets</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:admin_profile' %}">Profile</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:logout' %}">LogOut</a>
+      </li>
+      </ul>
+    </div>
+  </div>
+</nav>

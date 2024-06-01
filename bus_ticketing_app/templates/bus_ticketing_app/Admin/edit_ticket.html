@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Ticket</title>
+    <link rel="stylesheet" href="{% static 'bus_ticketing_app/drivers/style.css' %}">
+
+    <style>
+        .signup{
+        padding-top: 5px;
+      }
+
+      .asignup {
+        text-decoration: none;
+        /* background-color: #0dd60d; */
+        /* color:rgb(252, 247, 247); */
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="title">Edit Ticket</div>
+    <form action="{% url 'bus_ticketing_app:edit_ticket_save' %}" method="post">
+        {% csrf_token %}
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Passenger</span>
+                <select name="passenger" style="height: 50%; width: 300px; font-size: 20px;">
+                    {% for passenger in passengers %}
+                    <option value="{{ passenger.admin.id }}" {% if passenger.admin.id == ticket.passenger_id.admin.id %} selected {% endif %}>{{ passenger.admin.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Schedule</span>
+                <select name="schedule" style="height: 50%; width: 300px; font-size: 20px;">
+                    {% for schedule in schedules %}
+                    <option value="{{ schedule.id }}" {% if schedule.id == ticket.schedule.id %} selected {% endif %}>{{ schedule.departure_time }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Payment</span>
+                <select name="payment" style="height: 50%; width: 300px; font-size: 20px;">
+                    {% for payment in payments %}
+                    <option value="{{ payment.id }}" {% if ticket.id == ticket.payment.id %} selected {% endif %}>{{ payment.passenger_id.admin.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Seat Number</span>
+                <input type="number" placeholder="Seat Number" name="seat_number" value="{{ ticket.seat_number }}">
+                <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+            </div>
+            <div class="input-box">
+                <span class="details">Status</span>
+                <select name="status" style="height: 50%; width: 300px; font-size: 20px;">
+                    <option value="pending" {% if ticket.status == "pending" %} selected {% endif %}>Pending</option>
+                    <option value="comfirmed" {% if ticket.status == "comfirmed" %} selected {% endif %}>Comfirmed</option>
+                    <option value="cancelled" {% if ticket.status == "cancelled" %} selected {% endif %}>Cancelled</option>
+                </select>
+            </div>
+            <div class="button">
+                <input type="submit" value="Update Ticket">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Sign Up</title>
+    <link rel="stylesheet" href="{% static 'bus_ticketing_app/drivers/style.css' %}">
+
+    <style>
+        .signup{
+        padding-top: 5px;
+      }
+
+      .asignup {
+        text-decoration: none;
+        /* background-color: #0dd60d; */
+        /* color:rgb(252, 247, 247); */
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="title">Sign Up</div>
+    <form action="{% url 'bus_ticketing_app:userSignUp' %}" method="post">
+        {% csrf_token %}
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Username</span>
+                <input type="text" placeholder="Username" name="username">
+            </div>
+            <div class="input-box">
+                <span class="details">First Name</span>
+                <input type="text" placeholder="First Name" name="first_name">
+            </div>
+            <div class="input-box">
+                <span class="details">Last Name</span>
+                <input type="text" placeholder="Last Name" name="last_name">
+            </div>
+            <div class="input-box">
+                <span class="details">Email Address</span>
+                <input type="email" placeholder="Email Address" name="email">
+            </div>
+            <div class="input-box">
+                <span class="details">Phone Number</span>
+                <input type="text" placeholder="Enter your number" name="phone_number">
+            </div>
+            <div class="input-box">
+                <span class="details">Password</span>
+                <input type="password" placeholder="Password" name="password">
+                <i class="fa fa-eye-slash" id="togglePassword"></i>
+            </div>
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+            <div class="button">
+                <input type="submit" value="Sign Up">
+            </div>
+            <p class="signup"><a class="asignup" href="{% url 'bus_ticketing_app:signin' %}">Already Have an Account?</a></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>

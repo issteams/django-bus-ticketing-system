@@ -1,0 +1,136 @@
+body {
+  background-image: url("images/photo-1501393091915-82f0cbd8f338.jpeg");
+  background-repeat: no-repeat; /* Prevent the image from tiling */
+  background-attachment: fixed; /* Keep the image fixed in the viewport */
+  background-size: cover; /* Scale the image to cover the entire viewport */
+  
+}
+
+
+
+/* Custom Navbar Styles */
+.navbar {
+  background-color: #f8f8f8;
+  position: relative; /* Allow other elements to position over the background */
+  opacity: 0.8;
+}
+
+.nav-item {
+  padding:;
+  font-size: 15;
+  font-family: Fira Code;
+  color: rgb(12, 12, 12);
+}
+.navbar-brand {
+  color: #ffffff;
+}
+
+.navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #f8f9fa;
+  background-color: #0dd60d;
+}
+
+/* Custom Dropdown Styles */
+.dropdown-menu {
+  background-color: #ffffff;
+}
+
+.dropdown-menu .dropdown-item {
+  color: #0e0d0d;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #0dd60d;
+  color: #f8f8f8;
+}
+
+/* Navbar Toggler Icon Color */
+.navbar-toggler-icon {
+  color: #0a0a0a;
+}
+
+
+
+
+.banner {
+  text-align: center; /* Center the content horizontally */
+  padding: 20px; /* Add some padding for spacing */
+  background-color: none; /* Light gray background */
+  color: #f8f5f5; /* Dark text color */
+  font-weight: bold;
+  padding-top: 20%;
+}
+
+.banner h2 {
+  font-size: 24px; /* Adjust font size as needed */
+  margin-bottom: 10px; /* Add some space between heading and button */
+}
+
+.banner button {
+  background-color: #0426bb; /* Blue button color */
+  color: #fff; /* White text color */
+  border: none; /* Remove border */
+  padding: 10px 20px; /* Set padding for the button */
+  font-size: 16px; /* Adjust font size as needed */
+  cursor: pointer; /* Change cursor to a pointer on hover */
+  font-size: larger;
+  border-radius: 20px;
+  border-color: #f0efef;
+
+}
+
+@media (max-width: 768px) {
+  /* Styles for screens smaller than 768px (e.g., mobile devices) */
+  .banner h2 {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
+  
+  .banner button {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
+}
+
+
+/* footer*/
+.footer {
+  background-color: #f0efef;
+  color: rgb(10, 10, 10);
+  padding: 20px;
+  /* Fixed position at the bottom */
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 0.8;
+ 
+}
+@media (max-width: 768px) {
+  /* Styles for screens smaller than 768px (e.g., mobile devices) */
+  footer {
+    font-size: 14px; /* Adjust font size for smaller screens */
+
+  }
+}
+
+.social-icons a {
+  display: inline-block;
+  margin-right: 10px;
+  color: #333; /* Icon color */
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #007bff; /* Icon color on hover */
+}
+
+.copy
+    {
+      margin-top: 60px;
+    }

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bus Route</title>
+    <link rel="stylesheet" href="{% static 'bus_ticketing_app/drivers/style.css' %}">
+
+    <style>
+        .signup{
+        padding-top: 5px;
+      }
+
+      .asignup {
+        text-decoration: none;
+        /* background-color: #0dd60d; */
+        /* color:rgb(252, 247, 247); */
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="title">Add Bus</div>
+    <form action="{% url 'bus_ticketing_app:edit_bus_save' %}" method="post">
+        {% csrf_token %}
+            <div class="input-box">
+                <span class="details">Bus Number</span>
+                <input type="number" placeholder="Bus Number" name="bus_number" value="{{ bus.bus_number }}">
+                <input type="hidden" name="bus_id" value="{{ bus.id }}">
+            </div>
+            <div class="input-box">
+                <span class="details">Capacity</span>
+                <input type="number" placeholder="Capacity" name="capacity" value="{{ bus.capacity }}">
+            </div>
+            <div class="button">
+                <input type="submit" value="Update Bus">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

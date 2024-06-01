@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Schedule</title>
+    <link rel="stylesheet" href="{% static 'bus_ticketing_app/drivers/style.css' %}">
+
+    <style>
+        .signup{
+        padding-top: 5px;
+      }
+
+      .asignup {
+        text-decoration: none;
+        /* background-color: #0dd60d; */
+        /* color:rgb(252, 247, 247); */
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="title">Add Schedule</div>
+    <form action="{% url 'bus_ticketing_app:edit_schedule_save' %}" method="post">
+        {% csrf_token %}
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Bus Routes</span>
+                <select name="bus_route" style="height: 50%; width: 300px; font-size: 20px;">
+                    {% for bus_route in bus_routes %}
+                    <option value="{{ bus_route.id }}" {% if bus_route.id == schedule.route_id.id %} selected {% endif %}>From {{ bus_route.origin }} To {{ bus_route.destination }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Bus Number</span>
+                <select name="bus" style="height: 50%; width: 300px; font-size: 20px;">
+                    {% for bus in buses %}
+                    <option value="{{ bus.id }}" {% if bus.id == schedule.bus_id.id %} selected {% endif %}>{{ bus.bus_number }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Departure Time</span>
+                <input type="datetime-local" placeholder="Departure Time" name="departure_time" value="{{ schedule.departure_time|date:"Y-m-d H:i:s"}}">
+            </div>
+            <div class="input-box">
+                <span class="details">Arrival Time</span>
+                <input type="datetime-local" placeholder="Arrival Time" name="arrival_time" value="{{ schedule.arrival_time|date:"Y-m-d H:i:s"}}">
+                <input type="hidden" class="form-control" name="schedule_id" value="{{ schedule.id }}">
+            </div>
+            <div class="button">
+                <input type="submit" value="Add Schedule">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

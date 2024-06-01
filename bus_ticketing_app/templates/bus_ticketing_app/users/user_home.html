@@ -1,0 +1,123 @@
+{% extends "bus_ticketing_app/users/user_layout.html" %}
+
+{% block custom_css %}
+<style>
+    .bg-light {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .input-group .form-control {
+        border-radius: 0 !important;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .input-group .form-control:focus {
+        box-shadow: none;
+        border-color: #007bff;
+    }
+
+    .container-fluid {
+        max-width: 800px;
+    }
+
+    .shadow {
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+    }
+
+    .upcoming-bookings {
+        margin-top: 30px;
+    }
+
+    .booking-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    }
+
+    .btn-success {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .header {
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .user-info h2 {
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .user-info p {
+        color: #6c757d;
+    }
+</style>
+{% endblock custom_css %}
+
+{% block body %}
+<section class="content py-5">
+    <div class="container-fluid">
+        <div class="user-info">
+            <h2>Welcome, {{ user.get_full_name }}</h2>
+            <p>{{ user.email }}</p>
+        </div>
+
+        <form action="{% url 'bus_ticketing_app:search_result' %}" method="GET" class="p-4 bg-light rounded shadow">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="form-group">
+                        <h2 class="mb-4">Find Your Bus Journey</h2>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Origin" name="origin" aria-label="Origin" required>
+                            <input type="text" class="form-control" placeholder="Destination" name="destination" aria-label="Destination" required>
+                            <input type="date" class="form-control" placeholder="Date" name="date" aria-label="Date" required>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-muted">Enter your origin, destination, and travel date to find available bus journeys.</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="upcoming-bookings">
+            <h3 class="header">Upcoming Bookings</h3>
+            {% if upcoming_bookings %}
+                {% for booking in upcoming_bookings %}
+                    <div class="booking-card">
+                        <h4>Route: {{ booking.schedule.route.origin }} to {{ booking.schedule.route.destination }}</h4>
+                        <p><strong>Bus:</strong> {{ booking.schedule.bus.bus_number }}</p>
+                        <p><strong>Departure Time:</strong> {{ booking.schedule.departure_time }}</p>
+                        <p><strong>Arrival Time:</strong> {{ booking.schedule.arrival_time }}</p>
+                        <p><strong>Seat Number:</strong> {{ booking.seat_number }}</p>
+                        <p><strong>Status:</strong> {{ booking.get_status_display }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No upcoming bookings.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

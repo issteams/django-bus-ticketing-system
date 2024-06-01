@@ -1,0 +1,105 @@
+{% extends 'bus_ticketing_app/users/user_layout.html' %}
+{% load static %}
+
+{% block title %} Tickets Details {% endblock title%}
+
+{% block custom_css %}
+<style>
+  .results-content {
+    min-height: 100vh;
+    padding: 50px;
+    color: black;
+    
+  }
+  .overlay {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+  }
+  .message {
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .ticket-table {
+    width: 100%;
+    margin-top: 20px;
+  }
+  .ticket-table th, .ticket-table td {
+    padding: 15px;
+    text-align: left;
+  }
+  .ticket-table th {
+    background-color: green;
+    color: white;
+  }
+  .ticket-table td {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .reserve-btn, .view-schedule-btn {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .view-schedule-btn {
+    background-color: gray;
+  }
+</style>
+{% endblock custom_css %}
+
+{% block body %}
+<div class="results-content">
+  <div class="overlay">
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% else %}
+      <h1 class="text-center">Ticket Details</h1>
+      <div class="table-responsive">
+        <table class="ticket-table">
+          <thead>
+            <tr>
+              <th>Route</th>
+              <th>Bus</th>
+              <th>Departure Time</th>
+              <th>Arrival Time</th>
+              <th>Seat Number</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in tickets %}
+              <tr>
+                <td>{{ ticket.schedule.route_id.origin }} to {{ ticket.schedule.route_id.destination }}</td>
+                <td>{{ ticket.schedule.bus_id.bus_number }}</td>
+                <td>{{ ticket.schedule.departure_time }}</td>
+                <td>{{ ticket.schedule.arrival_time }}</td>
+                <td>{{ ticket.seat_number }}</td>
+                <td>{{ ticket.get_status_display }}</td>
+                <td>
+                  {% if ticket.status == 'pending' %}
+                    <a href="{% url 'bus_ticketing_app:make_payment' ticket.id %}" class="reserve-btn">Make Payment</a>
+                    <a href="" class="btn btn-danger">Cancel Ticket</a>
+                  {% elif ticket.status == 'comfirmed' %}
+                    <button class="view-schedule-btn" disabled>Confirmed</button>
+                  {% elif ticket.status == 'cancelled' %}
+                    <button class="view-schedule-btn" disabled>Cancelled</button>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock body %}

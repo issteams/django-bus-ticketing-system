@@ -1,0 +1,38 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-white bg-">
+    <div class="container">
+      <span class="navbar-logo" id="sp">
+        <a href="">
+          <img src="{% static 'bus_ticketing_app/assets/images/photo-1570125909517-53cb21c89ff2.jpeg' %}" style="height: 4.3rem; border-radius: 20px; padding-bottom: 5px;">
+        </a>
+      </span>
+      <span class="navbar-caption-wrap">
+        <a class="navbar-caption" href="">NaijaRide</a>
+      </span>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" style="color: black;" href="{% url 'bus_ticketing_app:user_home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="">Bookings</a>
+        </li>
+        <li class="nav-item">
+          {% url 'bus_ticketing_app:user_payments' as user_payments %}
+            <a class="nav-link {% if request.path == user_payments %} active {% endif %}" style="color: black;" href="{{ user_payments }}">Payments</a>
+        </li>
+        <li class="nav-item">
+          {% url 'bus_ticketing_app:user_tickets' as user_tickets %}
+          <a  style="color: black;" href="{{ user_tickets }}" class="nav-link {% if request.path == user_tickets %} active {% endif %}">Tickets</a>
+      </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: black;" href="{% url 'bus_ticketing_app:logout' %}">LogOut</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,36 @@
+{% extends "bus_ticketing_app/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-white bg-">
+    <div class="container">
+      <span class="navbar-logo" id="sp">
+        <a href="">
+          <img src="{% static 'bus_ticketing_app/assets/images/photo-1570125909517-53cb21c89ff2.jpeg' %}" style="height: 4.3rem; border-radius: 20px; padding-bottom: 5px;">
+        </a>
+      </span>
+      <span class="navbar-caption-wrap">
+        <a class="navbar-caption" href="">NaijaRide</a>
+      </span>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'bus_ticketing_app:signin' %}">Sign In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'bus_ticketing_app:signup' %}">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <section class="banner">
+    <h1>Embark on an Epic Journey Across Nigeria with NaijaRide - Your Ticket to Adventure!</h1>
+    <a href="{% url 'bus_ticketing_app:signin' %}"><button>Start Here</button></a>
+  </section>  
+  {% endblock %}

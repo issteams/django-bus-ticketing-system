@@ -1,0 +1,97 @@
+{% extends 'bus_ticketing_app/users/user_layout.html' %}
+
+{% block custom_css %}
+<style>
+    .payment-container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    }
+
+    .btn-primary {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .form-control {
+        margin-bottom: 15px;
+    }
+
+    .summary-title {
+        color: #007bff;
+    }
+
+    .payment-title {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .summary-box {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    }
+
+    .summary-box h4 {
+        margin-bottom: 15px;
+    }
+
+    .summary-box p {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock custom_css %}
+
+{% block body %}
+<section class="content py-5">
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2">
+                <div class="payment-container">
+                    <h3 class="payment-title">Payment Information</h3>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="card_number">Card Number</label>
+                            <input type="text" class="form-control" id="card_number" name="card_number" placeholder="Enter your card number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card_name">Name on Card</label>
+                            <input type="text" class="form-control" id="card_name" name="card_name" placeholder="Enter the name on your card" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <label for="expiry_date">Expiry Date</label>
+                                <input type="text" class="form-control" id="expiry_date" name="expiry_date" placeholder="MM/YY" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Enter CVV" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="billing_address">Billing Address</label>
+                            <input type="text" class="form-control" id="billing_address" name="billing_address" placeholder="Enter your billing address" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Make Payment</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8 offset-md-2 mt-5">
+                <div class="summary-box">
+                    <h4 class="summary-title">Booking Summary</h4>
+                    <p><strong>Origin:</strong> {{ origin }}</p>
+                    <p><strong>Destination:</strong> {{ destination }}</p>
+                    <p><strong>Departure Time:</strong> {{ departure_time }}</p>
+                    <p><strong>Arrival Time:</strong> {{ arrival_time }}</p>
+                    <p><strong>Bus Capacity:</strong> {{ capacity }}</p>
+                    <p><strong>Seat Number:</strong> {{ seat_number }}</p>
+                    <p><strong>Total Price:</strong> ${{ total_price }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock body %}
