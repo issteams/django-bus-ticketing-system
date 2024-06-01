@@ -485,7 +485,7 @@ def add_ticket_save(request):
         status = request.POST.get('status')
 
         try:
-            Ticket.objects.create(passenger_id=passenger, schedule=schedule, payment=payment, status=status, seat_number=seat_number)
+            Ticket.objects.create(passenger=passenger, schedule=schedule, payment=payment, status=status, seat_number=seat_number)
             messages.success(request, "Ticket Added Successfully!")
             return redirect('bus_ticketing_app:ticket')
         except:
@@ -519,19 +519,19 @@ def edit_ticket_save(request):
         seat_number = request.POST.get('seat_number')
         status = request.POST.get('status')
 
-        # try:
-        ticket = Ticket.objects.get(id=ticket_id)
-        ticket.passenger_id = passenger
-        ticket.schedule = schedule
-        ticket.payment_id = payment
-        ticket.seat_number = seat_number
-        ticket.status = status
-        ticket.save()
-        messages.success(request, "Ticket Updated Successfully!")
-        return redirect('bus_ticketing_app:ticket')
-        # except:
-        #     messages.error(request, "Failed to Update Ticket!")
-        #     return redirect('bus_ticketing_app:ticket')
+        try:
+            ticket = Ticket.objects.get(id=ticket_id)
+            ticket.passenger_id = passenger
+            ticket.schedule = schedule
+            ticket.payment_id = payment
+            ticket.seat_number = seat_number
+            ticket.status = status
+            ticket.save()
+            messages.success(request, "Ticket Updated Successfully!")
+            return redirect('bus_ticketing_app:ticket')
+        except:
+            messages.error(request, "Failed to Update Ticket!")
+            return redirect('bus_ticketing_app:ticket')
     else:
         return redirect('bus_ticketing_app:ticket')
 
@@ -555,7 +555,7 @@ def admin_profile_save(request):
         user = CustomUser.objects.get(id=request.user.id)
         user.first_name = first_name
         user.last_name = last_name
-        if password != None or password != "":
+        if password != None and password != "":
             user.set_password(password)
         user.save()
         return redirect("bus_ticketing_app:admin_home")

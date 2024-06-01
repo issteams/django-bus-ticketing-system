@@ -122,20 +122,3 @@ body {
 
   }
 }
-
-.social-icons a {
-  display: inline-block;
-  margin-right: 10px;
-  color: #333; /* Icon color */
-  font-size: 24px;
-  transition: color 0.3s ease;
-}
-
-.social-icons a:hover {
-  color: #007bff; /* Icon color on hover */
-}
-
-.copy
-    {
-      margin-top: 60px;
-    }

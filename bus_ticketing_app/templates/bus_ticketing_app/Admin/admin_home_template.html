@@ -1,20 +1,56 @@
 {% extends "bus_ticketing_app/Admin/admin_layout.html" %}
 
+{% block custom_css %}
+<style>
+    .card-custom {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    .card-custom:hover {
+        transform: translateY(-10px);
+    }
+    .card-custom .card-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .card-custom .icon {
+        font-size: 3rem;
+        opacity: 0.7;
+    }
+    .card-footer {
+        background: rgba(0, 0, 0, 0.05);
+        font-weight: bold;
+    }
+    .chart-container {
+        position: relative;
+        height: 300px;
+    }
+    .bg-info-custom { background: linear-gradient(45deg, #1d8cf8, #3358f4); }
+    .bg-success-custom { background: linear-gradient(45deg, #00c6ff, #0072ff); }
+    .bg-warning-custom { background: linear-gradient(45deg, #fbc658, #ffa726); }
+    .bg-danger-custom { background: linear-gradient(45deg, #ef8157, #fa5c7c); }
+    .bg-primary-custom { background: linear-gradient(45deg, #56ccf2, #2f80ed); }
+    .bg-secondary-custom { background: linear-gradient(45deg, #ab47bc, #7b1fa2); }
+    .bg-light-custom { background: linear-gradient(45deg, #ffffff, #eeeeee); }
+</style>
+{% endblock custom_css %}
+
 {% block body %}
 <div class="container mt-4">
     <div class="row">
         <!-- Total Staffs -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-info text-white">
+            <div class="card card-custom bg-info-custom text-white">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ staff_count }}</h3>
-                            <p>Total Staffs</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ staff_count }}</h3>
+                        <p>Total Staffs</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:staff' %}" class="card-footer text-white clearfix small z-1">
@@ -27,16 +63,14 @@
         </div>
         <!-- Total Passengers -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-success text-white">
+            <div class="card card-custom bg-success-custom text-white">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ passenger_count }}</h3>
-                            <p>Total Passengers</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ passenger_count }}</h3>
+                        <p>Total Passengers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:passenger' %}" class="card-footer text-white clearfix small z-1">
@@ -49,16 +83,14 @@
         </div>
         <!-- Total Routes -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-warning text-white">
+            <div class="card card-custom bg-warning-custom text-white">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ bus_route_count }}</h3>
-                            <p>Total Routes</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ bus_route_count }}</h3>
+                        <p>Total Routes</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:bus_route' %}" class="card-footer text-white clearfix small z-1">
@@ -71,16 +103,14 @@
         </div>
         <!-- Total Buses -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-danger text-white">
+            <div class="card card-custom bg-danger-custom text-white">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ bus_count }}</h3>
-                            <p>Total Buses</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ bus_count }}</h3>
+                        <p>Total Buses</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:bus' %}" class="card-footer text-white clearfix small z-1">
@@ -95,16 +125,14 @@
     <div class="row">
         <!-- Total Schedules -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-primary text-white">
+            <div class="card card-custom bg-primary-custom text-white">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ schedule_count }}</h3>
-                            <p>Total Schedules</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-calendar" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ schedule_count }}</h3>
+                        <p>Total Schedules</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-calendar"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:schedule' %}" class="card-footer text-white clearfix small z-1">
@@ -117,16 +145,14 @@
         </div>
         <!-- Total Payments -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-secondary text-white">
+            <div class="card card-custom bg-secondary-custom text-white">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ payment_count }}</h3>
-                            <p>Total Payments</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-cash" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ payment_count }}</h3>
+                        <p>Total Payments</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-cash"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:payment' %}" class="card-footer text-white clearfix small z-1">
@@ -139,16 +165,14 @@
         </div>
         <!-- Total Tickets -->
         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card bg-light text-dark">
+            <div class="card card-custom bg-light-custom text-dark">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ ticket_count }}</h3>
-                            <p>Total Tickets</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-ticket" style="font-size: 2rem;"></i>
-                        </div>
+                    <div>
+                        <h3>{{ ticket_count }}</h3>
+                        <p>Total Tickets</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ticket"></i>
                     </div>
                 </div>
                 <a href="{% url 'bus_ticketing_app:ticket' %}" class="card-footer text-dark clearfix small z-1">
@@ -164,30 +188,36 @@
     <!-- Charts -->
     <div class="row">
         <!-- Tickets per Route Chart -->
-        <div class="col-lg-6">
-            <div class="card">
+        <div class="col-lg-6 mb-4">
+            <div class="card card-custom">
                 <div class="card-header">
                     <h3 class="card-title">Tickets per Route</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="ticketsPerRouteChart"></canvas>
+                    <div class="chart-container">
+                        <canvas id="ticketsPerRouteChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Payments per Day Chart -->
-        <div class="col-lg-6">
-            <div class="card">
+        <div class="col-lg-6 mb-4">
+            <div class="card card-custom">
                 <div class="card-header">
                     <h3 class="card-title">Payments per Day</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="paymentsPerDayChart"></canvas>
+                    <div class="chart-container">
+                        <canvas id="paymentsPerDayChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block custom_js %}
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -195,53 +225,55 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var ticketsPerRouteData = {
-            labels: [{% for item in tickets_per_route %}"{{ item.schedule__route__origin }}",{% endfor %}],
-            datasets: [{
-                label: 'Tickets',
-                data: [{% for item in tickets_per_route %}{{ item.count }},{% endfor %}],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        var paymentsPerDayData = {
-            labels: [{% for item in payments_per_day %}"{{ item.day }}",{% endfor %}],
-            datasets: [{
-                label: 'Payments',
-                data: [{% for item in payments_per_day %}{{ item.total_amount }},{% endfor %}],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        var ticketsPerRouteCtx = document.getElementById('ticketsPerRouteChart').getContext('2d');
-        var paymentsPerDayCtx = document.getElementById('paymentsPerDayChart').getContext('2d');
-
-        new Chart(ticketsPerRouteCtx, {
-            type: 'bar',
-            data: ticketsPerRouteData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            labels: [{% for item in tickets_per_route %}"{{ item.schedule__route__origin }}"
+                {% endfor %}],
+                datasets: [{
+                    label: 'Tickets',
+                    data: [{% for item in tickets_per_route %}{{ item.count }},{% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+    
+            var paymentsPerDayData = {
+                labels: [{% for item in payments_per_day %}"{{ item.day }}",{% endfor %}],
+                datasets: [{
+                    label: 'Payments',
+                    data: [{% for item in payments_per_day %}{{ item.total_amount }},{% endfor %}],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            };
+    
+            var ticketsPerRouteCtx = document.getElementById('ticketsPerRouteChart').getContext('2d');
+            var paymentsPerDayCtx = document.getElementById('paymentsPerDayChart').getContext('2d');
+    
+            new Chart(ticketsPerRouteCtx, {
+                type: 'bar',
+                data: ticketsPerRouteData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
-
-        new Chart(paymentsPerDayCtx, {
-            type: 'line',
-            data: paymentsPerDayData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            });
+    
+            new Chart(paymentsPerDayCtx, {
+                type: 'line',
+                data: paymentsPerDayData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
+            });
         });
-    });
-</script>
-{% endblock %}
+    </script>
+    {% endblock custom_js %}
+    
